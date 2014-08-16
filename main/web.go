@@ -27,6 +27,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	. "github.com/bradfitz/runsit/tasks"
+	. "github.com/bradfitz/runsit/logger"
 )
 
 func taskList(w http.ResponseWriter, r *http.Request) {
@@ -34,7 +37,7 @@ func taskList(w http.ResponseWriter, r *http.Request) {
 	drawTemplate(w, "taskList", tmplData{
 		"Title": "Tasks on " + hostname,
 		"Tasks": GetTasks(),
-		"Log":   logBuf.String(),
+		"Log":   LogBuf.String(),
 	})
 }
 
@@ -86,9 +89,9 @@ func taskView(w http.ResponseWriter, r *http.Request) {
 	if in != nil {
 		data["PID"] = in.Pid()
 		data["Output"] = in.Output()
-		data["Cmd"] = in.lr
-		data["StartTime"] = in.startTime
-		data["StartAgo"] = time.Now().Sub(in.startTime)
+		data["Cmd"] = in.Lr
+		data["StartTime"] = in.StartTime
+		data["StartAgo"] = time.Now().Sub(in.StartTime)
 	}
 
 	// list failures in reverse-chronological order
@@ -116,7 +119,7 @@ func runWebServer(ln net.Listener) {
 	}
 	err := s.Serve(ln)
 	if err != nil {
-		logger.Fatalf("webserver exiting: %v", err)
+		Logger.Fatalf("webserver exiting: %v", err)
 	}
 }
 
@@ -130,7 +133,7 @@ func drawTemplate(w io.Writer, name string, data tmplData) {
 	}
 	err := templates[name].ExecuteTemplate(w, "root", data)
 	if err != nil {
-		logger.Println(err)
+		Logger.Println(err)
 	}
 }
 

@@ -23,6 +23,8 @@ import (
 	"os"
 	"strings"
 	"syscall"
+
+	. "github.com/bradfitz/runsit/tasks"
 )
 
 func MaybeBecomeChildProcess() {

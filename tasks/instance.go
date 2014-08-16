@@ -8,14 +8,15 @@ import (
 	"time"
 
 	"github.com/bradfitz/runsit/jsonconfig"
+	. "github.com/bradfitz/runsit/logger"
 )
 
 // TaskInstance is a particular instance of a running (or now dead) Task.
 type TaskInstance struct {
 	task      *Task          // set once; not goroutine safe (may only call public methods)
-	startTime time.Time      // set once; immutable
+	StartTime time.Time      // set once; immutable
 	config    jsonconfig.Obj // set once; immutable
-	lr        *LaunchRequest // set once; immutable (actual command parameters)
+	Lr        *LaunchRequest // set once; immutable (actual command parameters)
 	cmd       *exec.Cmd      // set once; immutable (command parameters to helper process)
 	output    TaskOutput     // internal locking, safe for concurrent access
 
@@ -26,7 +27,7 @@ type TaskInstance struct {
 
 // ID returns a unique ID string for this task instance.
 func (in *TaskInstance) ID() string {
-	return fmt.Sprintf("%q/%d-pid%d", in.task.Name, in.startTime.Unix(), in.Pid())
+	return fmt.Sprintf("%q/%d-pid%d", in.task.Name, in.StartTime.Unix(), in.Pid())
 }
 
 func (in *TaskInstance) Printf(format string, args ...interface{}) {
@@ -37,7 +38,7 @@ func (in *TaskInstance) Printf(format string, args ...interface{}) {
 		Data:     msg,
 		instance: in,
 	})
-	logger.Print(msg)
+	Logger.Print(msg)
 }
 
 func (in *TaskInstance) Pid() int {

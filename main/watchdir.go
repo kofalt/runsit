@@ -21,6 +21,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+	. "github.com/bradfitz/runsit/tasks"
+	. "github.com/bradfitz/runsit/logger"
 )
 
 const buffered = 8
@@ -58,14 +60,14 @@ func (w *pollingDirWatcher) poll() {
 	for {
 		d, err := os.Open(w.dir)
 		if err != nil {
-			logger.Printf("Error opening directory %q: %v", w.dir, err)
+			Logger.Printf("Error opening directory %q: %v", w.dir, err)
 			time.Sleep(15 * time.Second)
 			continue
 		}
 		fis, err := d.Readdir(-1)
 		d.Close()
 		if err != nil {
-			logger.Printf("Error reading directory %q: %v", w.dir, err)
+			Logger.Printf("Error reading directory %q: %v", w.dir, err)
 			time.Sleep(15 * time.Second)
 			continue
 		}
@@ -88,7 +90,7 @@ func (w *pollingDirWatcher) poll() {
 			if em, ok := last[baseName]; ok && em.Equal(m) {
 				continue
 			}
-			logger.Printf("Updated config file: name = %q, modtime = %v", name, m)
+			Logger.Printf("Updated config file: name = %q, modtime = %v", name, m)
 			last[baseName] = m
 			w.c <- diskFile{
 				baseName: baseName,

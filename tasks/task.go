@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/bradfitz/runsit/jsonconfig"
+	. "github.com/bradfitz/runsit/logger"
 )
 
 // A Task is a named daemon. A single instance of Task exists for the
@@ -42,7 +43,7 @@ func NewTask(name string) *Task {
 }
 
 func (t *Task) Printf(format string, args ...interface{}) {
-	logger.Printf(fmt.Sprintf("Task %q: %s", t.Name, format), args...)
+	Logger.Printf(fmt.Sprintf("Task %q: %s", t.Name, format), args...)
 }
 
 func (t *Task) loop() {
@@ -82,7 +83,7 @@ func (t *Task) onTaskFinished(m instanceGoneMessage) {
 	}
 	t.failures = append(t.failures, m.in)
 
-	aliveTime := m.in.endTime.Sub(m.in.startTime)
+	aliveTime := m.in.endTime.Sub(m.in.StartTime)
 	restartIn := 0 * time.Second
 	if min := 5 * time.Second; aliveTime < min {
 		restartIn = min - aliveTime
@@ -246,7 +247,7 @@ func (t *Task) updateFromConfig(jc jsonconfig.Obj) (err error) {
 		if err != nil {
 			return t.startError("error getting file of port %q listener: %v", portName, err)
 		}
-		logger.Printf("opened port named %q on %v; fd=%d", portName, vi, lf.Fd())
+		Logger.Printf("opened port named %q on %v; fd=%d", portName, vi, lf.Fd())
 		ln.Close()
 		env = append(env, fmt.Sprintf("RUNSIT_PORTFD_%s=%d", portName, 3+len(extraFiles)))
 		extraFiles = append(extraFiles, lf)
@@ -317,8 +318,8 @@ func (t *Task) updateFromConfig(jc jsonconfig.Obj) (err error) {
 	instance := &TaskInstance{
 		task:      t,
 		config:    jc,
-		startTime: time.Now(),
-		lr:        lr,
+		StartTime: time.Now(),
+		Lr:        lr,
 		cmd:       cmd,
 	}
 

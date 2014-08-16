@@ -16,7 +16,7 @@ limitations under the License.
 
 // +build cgo
 
-package main
+package tasks
 
 import (
 	"bufio"
