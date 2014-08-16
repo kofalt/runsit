@@ -1,10 +1,10 @@
 {
-  "cwd": "./test/daemon",
+  "cwd": ".",
   "standardEnv": false,
   "env": {
       "FOO": "BAR"
   },
-  "binary": "./testdaemon",
+  "binary": "./bin/testdaemon",
   "args": [
     "--crash"
   ]

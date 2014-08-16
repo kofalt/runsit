@@ -1,13 +1,13 @@
 {
   "user": ["_env", "${USER}"],
-  "cwd": "./test/daemon",
+  "cwd": ".",
   "standardEnv": true,
   "env": {
       "FOO": "BAR",
       "WANT_USER": ["_env", "want-${USER}"]
   },
   "numFiles": 123,
-  "binary": "./testdaemon",
+  "binary": "./bin/testdaemon",
   "args": [
     "--port", "8081"
   ],

@@ -13,7 +13,7 @@ name="runsit"
 	export GOPATH="$PWD"/.gopath/
 	export BASEDIR="$PWD"
 
-	go build -o ./bin/$name  $pkg/$name/main
-	go build -o ./bin/daemon $pkg/$name/test/daemon
+	go build -o ./bin/$name      $pkg/$name/main
+	go build -o ./bin/testdaemon $pkg/$name/test/daemon
 )
 
