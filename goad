@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Where is this script located?
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Project details
+pkg="github.com/bradfitz"
+name="runsit"
+
+(
+	cd "$DIR"
+
+	export GOPATH="$PWD"/.gopath/
+	export BASEDIR="$PWD"
+
+	go build -o ./bin/$name  $pkg/$name/main
+	go build -o ./bin/daemon $pkg/$name/test/daemon
+)
+
